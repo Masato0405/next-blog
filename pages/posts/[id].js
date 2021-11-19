@@ -1,6 +1,17 @@
 import Layout from "../../components/layout";
-import { getAllPostId } from "../../lib/posts";
+import { getAllPostIds, getPostData } from "../../lib/posts";
 
+// idを元に必要な値を取得する
+export async function getStaticProps({ params }) {
+  const postData = getPostData(params.id);
+  return {
+    props: {
+      postData,
+    },
+  };
+}
+
+// idの配列を返す
 export async function getStaticPaths() {
   const paths = getAllPostIds();
   return {
@@ -9,6 +20,14 @@ export async function getStaticPaths() {
   };
 }
 
-export default function Post() {
-  return <Layout>...</Layout>;
+export default function Post({ postData }) {
+  return (
+    <Layout>
+      {postData.title}
+      <br />
+      {postData.id}
+      <br />
+      {postData.date}
+    </Layout>
+  );
 }
